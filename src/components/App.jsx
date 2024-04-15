@@ -6,6 +6,7 @@ import ImageGallery from "./ImageGallery/ImageGallery";
 import Loader from "./Loader/Loader";
 import Modal from "./Modal/Modal";
 import Messaje from "./Messaje/Message";
+import ScrollButton from "./ScrollButton/ScrollButton";
 export class App extends React.Component {
   constructor(props){
     super(props)
@@ -18,7 +19,8 @@ export class App extends React.Component {
       isLoadMOre:true,
       isOpenModal: false,
       modalImage:'',
-      isMesaje:true
+      isMesaje:true,
+      isScroll:false,
     }
   }
 // componentDidMount(){
@@ -52,6 +54,7 @@ fetchGallery = async () => {
       gallery: [...prevState.gallery, ...data.hits],
       isLoading: false,
       error: null, 
+      isScroll:true
     }));
   } catch (error) {
     console.error('Error fetching gallery:', error);
@@ -149,7 +152,7 @@ closeModal= () => {
 }
 
 render() {
-  const { gallery, query, isLoading, isOpenModal, modalImage,isMesaje } = this.state;
+  const { gallery, query, isLoading, isOpenModal, modalImage,isMesaje, isScroll } = this.state;
   const totalImages = gallery.length;
   const showLoadMore = totalImages > 0 && !isLoading;
 
@@ -160,6 +163,8 @@ render() {
           {isLoading ? <Loader /> : <ImageGallery images={gallery} openModal={this.openModal} />}
           {showLoadMore && <Button onLoadMore={this.handlerLoadMore} />}
           {isOpenModal && <Modal closeModal={this.closeModal} image={modalImage} />}
+          {isScroll && <ScrollButton/> }
+
       </>
   );
 }
